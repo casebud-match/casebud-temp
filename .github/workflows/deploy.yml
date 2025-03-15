@@ -25,6 +25,22 @@ jobs:
         with:
           micromamba-version: '1.5.8-0'
           environment-file: 'build-environment.yml'
+      
+      - name: Set up Google credentials
+        run: |
+          echo "${{ secrets.GOOGLE_SHEET_CREDENTIALS }}" > google_sheet_credentials.txt
+        env:
+          GOOGLE_SHEET_CREDENTIALS: ${{ secrets.GOOGLE_SHEET_CREDENTIALS }}
+
+      - name: Set up Zoom and other environment variables
+        run: |
+          echo "ZOOM_ACCOUNT_ID=${{ secrets.ZOOM_ACCOUNT_ID }}" >> $GITHUB_ENV
+          echo "ZOOM_CLIENT_ID=${{ secrets.ZOOM_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "ZOOM_CLIENT_SECRET=${{ secrets.ZOOM_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "ZOOM_TOKEN_URL=${{ secrets.ZOOM_TOKEN_URL }}" >> $GITHUB_ENV
+          echo "SENDER_EMAIL=${{ secrets.SENDER_EMAIL }}" >> $GITHUB_ENV
+          echo "SENDER_PASSWORD=${{ secrets.SENDER_PASSWORD }}" >> $GITHUB_ENV
+          echo "SHEET_ID=${{ secrets.SHEET_ID }}" >> $GITHUB_ENV
 
       - name: Build the JupyterLite site
         shell: bash -l {0}
